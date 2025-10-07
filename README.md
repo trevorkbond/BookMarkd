@@ -18,7 +18,28 @@ BookMarkd/
 
 ## Quick Start
 
-### Prerequisites
+### Using the Setup Script (Recommended)
+
+```bash
+./setup.sh
+```
+
+This script will automatically set up both the backend and frontend.
+
+### Using Docker Compose (Easiest)
+
+```bash
+docker-compose up
+```
+
+This will start:
+- MySQL database on port 3306
+- Flask backend on port 5000
+- React frontend on port 3000
+
+### Manual Setup
+
+#### Prerequisites
 
 - Python 3.8+
 - Node.js 14+
@@ -108,6 +129,23 @@ DATABASE_URL=mysql://username:password@your-rds-endpoint.region.rds.amazonaws.co
 - Backend runs on port 5000
 - Frontend runs on port 3000
 - CORS is enabled for local development
+
+## Project Features (Planned)
+
+- 📚 Rate and review books
+- 👥 Share books with friends
+- 🤖 Receive personalized book recommendations
+- 📖 Join online book clubs
+- 🎯 Set and track reading goals
+- 📊 View reading statistics
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
