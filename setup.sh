@@ -53,6 +53,10 @@ if [ ! -f ".env" ]; then
     cp .env.example .env
 fi
 
+# Build the frontend for production
+echo "Building the frontend for production..."
+npm run build
+
 cd ..
 
 echo ""
