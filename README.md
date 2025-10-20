@@ -34,7 +34,7 @@ docker-compose up
 
 This will start:
 - MySQL database on port 3306
-- Flask backend on port 5000
+- Flask backend on port 5001
 - React frontend on port 3000
 
 ### Manual Setup
@@ -79,7 +79,7 @@ python -c "from app import app, db; app.app_context().push(); db.create_all()"
 python app.py
 ```
 
-The API will be running at `http://localhost:5000`
+The API will be running at `http://localhost:5001`
 
 ### Frontend Setup
 
@@ -96,7 +96,7 @@ npm install
 3. Configure environment:
 ```bash
 cp .env.example .env
-# Edit .env if needed (default points to http://localhost:5000)
+# Edit .env if needed (default points to http://localhost:5001)
 ```
 
 4. Start the development server:
@@ -126,7 +126,7 @@ DATABASE_URL=mysql://username:password@your-rds-endpoint.region.rds.amazonaws.co
 
 ## Development
 
-- Backend runs on port 5000
+- Backend runs on port 5001
 - Frontend runs on port 3000
 - CORS is enabled for local development
 
