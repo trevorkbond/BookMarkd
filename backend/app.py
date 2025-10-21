@@ -1,32 +1,42 @@
+import os
 from flask import Flask, jsonify
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
-import os
+from backend.config import config
+from backend.extensions import db, jwt
 
-app = Flask(__name__)
-CORS(app)
+def create_app(config_name=None):
+    """Application factory that configures extensions and routes."""
+    app = Flask(__name__)
 
-# Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'mysql://user:password@localhost/bookmarkd')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    env_config = config_name or os.environ.get('FLASK_CONFIG', 'default')
+    app_config = config.get(env_config)
+    if not app_config:
+        raise ValueError(f"Unknown configuration '{env_config}'")
+    app.config.from_object(app_config)
 
-db = SQLAlchemy(app)
+    # Allow DATABASE_URL override even if config already sets a default.
+    database_uri = os.environ.get('DATABASE_URL')
+    if database_uri:
+        app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
 
-@app.route('/api/health', methods=['GET'])
-def health_check():
-    """Health check endpoint"""
-    return jsonify({
-        'status': 'healthy',
-        'message': 'BookMarkd API is running'
-    })
+    # Configure JWT secret; fall back to SECRET_KEY if none provided.
+    app.config.setdefault('JWT_SECRET_KEY', os.environ.get('JWT_SECRET_KEY') or app.config.get('SECRET_KEY'))
 
-@app.route('/api/books', methods=['GET'])
-def get_books():
-    """Get all books endpoint"""
-    # TODO: Implement database query
-    return jsonify({
-        'books': []
-    })
+    CORS(app)
+    db.init_app(app)
+    jwt.init_app(app)
+
+    # Register Blueprints
+    from backend.routes.auth import auth_bp
+    from backend.routes.health import health_bp
+    
+    app.register_blueprint(auth_bp, url_prefix='/api/auth')
+    app.register_blueprint(health_bp, url_prefix='/api')
+
+    return app
+
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app = create_app()
+    app.run(debug=True, host='0.0.0.0', port=5001)
+
