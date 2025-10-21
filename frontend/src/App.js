@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./App.css";
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
 
 function App() {
   const [health, setHealth] = useState(null);
@@ -11,22 +11,24 @@ function App() {
 
   useEffect(() => {
     // Fetch health status
-    axios.get(`${API_URL}/api/health`)
-      .then(response => {
+    axios
+      .get(`${API_URL}/api/health`)
+      .then((response) => {
         setHealth(response.data);
       })
-      .catch(error => {
-        console.error('Error fetching health:', error);
+      .catch((error) => {
+        console.error("Error fetching health:", error);
       });
 
     // Fetch books
-    axios.get(`${API_URL}/api/books`)
-      .then(response => {
+    axios
+      .get(`${API_URL}/api/books`)
+      .then((response) => {
         setBooks(response.data.books);
         setLoading(false);
       })
-      .catch(error => {
-        console.error('Error fetching books:', error);
+      .catch((error) => {
+        console.error("Error fetching books:", error);
         setLoading(false);
       });
   }, []);
@@ -49,8 +51,10 @@ function App() {
             <p>Loading books...</p>
           ) : books.length > 0 ? (
             <ul className="books-list">
-              {books.map(book => (
-                <li key={book.id}>{book.title} by {book.author}</li>
+              {books.map((book) => (
+                <li key={book.id}>
+                  {book.title} by {book.author}
+                </li>
               ))}
             </ul>
           ) : (
